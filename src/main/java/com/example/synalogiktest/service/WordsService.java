@@ -154,7 +154,7 @@ public class WordsService {
         
         output.append(
             "The most frequently occurring word length is " + maxWordLengthFrequency +
-            ", for word lengths of " + String.join(" & ", maxWordLengths)
+            ", for word lengths of " + String.join(" & ", maxWordLengths) + "\n"
         );
     }
 }
