@@ -1,7 +1,5 @@
 package com.example.synalogiktest.controller;
 
-import java.util.List;
-
 import com.example.synalogiktest.service.WordsService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +18,7 @@ public class ReadFileController {
 
     @PostMapping("/file")
 	public String hello(@RequestParam("file") MultipartFile file) {
-        List<String> words = wordsService.processFile(file);
-		return wordsService.getOutput(words);
+		return wordsService.processFile(file);
 
 	}
 }

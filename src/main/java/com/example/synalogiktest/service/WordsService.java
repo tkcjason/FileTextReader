@@ -27,11 +27,21 @@ public class WordsService {
     private final static String TEXT_CONTENT_TYPE = "text/plain";
     
     /**
+     * Process the file.
+     * @param file
+     * @return String
+     */
+    public String processFile(MultipartFile file) {
+        List<String> words = convertFileToWords(file);
+        return getOutput(words);
+    }
+
+    /**
      * Reads file and break it up into words.
      * @param file
      * @return List<String>
      */
-    public List<String> processFile(MultipartFile file) {
+    private List<String> convertFileToWords(MultipartFile file) {
         List<String> words = new ArrayList<String>();
         if (!file.getContentType().equals(TEXT_CONTENT_TYPE)) {
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Unsupported uploaded file type");
@@ -60,7 +70,7 @@ public class WordsService {
      * Returns the output string containing statistics around the file content.
      * @return String
      */
-    public String getOutput(List<String> words) {
+    private String getOutput(List<String> words) {
         // StringBuilder used here as we need the object to be mutable and unsynchronised.
         StringBuilder output = new StringBuilder();
         appendWordCount(output, words);
