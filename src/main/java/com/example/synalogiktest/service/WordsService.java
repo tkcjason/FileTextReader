@@ -54,6 +54,8 @@ public class WordsService {
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             // Read file line by line, as opposed to a large String, which may have performance issues if reading large file
             while ((line = bufferedReader.readLine()) != null) {
+                // remove all leading/trailing whitespaces
+                line = line.trim();
                 if (line.trim().length() == 0) {
                     continue;
                 }

@@ -43,7 +43,7 @@ class WordsServiceTests {
 	@Test
 	void TestProcessFileSucceedsWhenReadingValidTextFile() {
 		WordsService wordsService = new WordsService();
-		String contents = "Hello world & good morning. The date is 18/05/2016";
+		String contents = "   Hello world & good morning. The date is 18/05/2016";
 		MultipartFile mockFile = new MockMultipartFile(".txt",
             "file.txt",
             "text/plain",
