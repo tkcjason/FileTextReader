@@ -15,13 +15,13 @@ To run the application in a terminal window
 - For any words that does not contain alphanumeric characters, then treat them as a word, e.g. "******" and "&"
 
 ## Usage
-Submit a POST request to the the /file endpoint on http://localhost:8080, with file as the form data.
+Submit a GET request to the the /file endpoint on http://localhost:8080, with file as the form data.
 
 We may use a REST API client, such as Postman, Insomnia, Paw, etc.
 
 Alternatively with Curl,
 ```
-curl -v -F file=@C:/Users/User/data.txt http://localhost:8080/file
+curl --request GET http://localhost:8080/file --form file=@C:/Users/User/data.txt
 ```
 
 The file must a file with content type 'text/plain'.
