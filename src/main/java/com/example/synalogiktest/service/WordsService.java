@@ -57,11 +57,28 @@ public class WordsService {
                 if (line.trim().length() == 0) {
                     continue;
                 }
-                String[] wordsInLine = line.split(" ");
+                // split by one or more white space
+                String[] wordsInLine = line.split("\\s+");
                 words.addAll(Arrays.asList(wordsInLine));
             }
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "IO Exception");
+        }
+
+        for (int i = 0; i < words.size(); i++) {
+            // when word is alphanumeric and ends on non-alphanumeric character, we treat the last character as punctuation that is not
+            // part of the word
+            String word = words.get(i);
+            String firstLetter = word.substring(0, 1);
+            if ((word.matches("^.*[a-zA-Z0-9]+.*$")) && firstLetter.matches("\"")) {
+                String wordWithoutPunctuation = word.substring(1, word.length());
+                words.set(i, wordWithoutPunctuation);
+            }
+            while ((word.matches("^.*[a-zA-Z0-9]+.*$")) && word.substring(word.length() - 1).matches("[.,;!?\"-]")) {
+                String wordWithoutPunctuation = word.substring(0, words.get(i).length() - 1);
+                words.set(i, wordWithoutPunctuation);
+                word = words.get(i);
+            }
         }
         return words;
     }
@@ -102,9 +119,7 @@ public class WordsService {
         for (int i=0;i < words.size();i++)
         {
             String word = words.get(i);
-            if ((word.matches("^.*[a-zA-Z0-9]+.*$"))) {
-                totalWordCount += words.get(i).length();
-            }
+            totalWordCount += word.length();
         }
 
         if (words.size() != 0) {
@@ -124,10 +139,6 @@ public class WordsService {
         Map<Integer,Integer> frequencyOfWordLength = new HashMap<Integer,Integer>();
         for (int i = 0; i < words.size(); i++) {
             String word = words.get(i);
-            // If the last letter is a full stop, then don't include it as part of the word
-            if (word.substring(word.length() - 1).equals(".")) {
-                word = word.substring(0, word.length() - 1);
-            }
             Integer previousValue = frequencyOfWordLength.get(word.length()) != null ? frequencyOfWordLength.get(word.length()) : 0;
             frequencyOfWordLength.put(word.length(), previousValue + 1);
         }

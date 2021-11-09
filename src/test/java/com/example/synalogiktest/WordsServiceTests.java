@@ -62,4 +62,41 @@ class WordsServiceTests {
 			+ "The most frequently occurring word length is 2, for word lengths of 4 & 5\n";
 		Assertions.assertEquals(result, expected);
 	}
+
+	@Test
+	void TestProcessFileSucceedsWhenReadingValidTextFileWithPunctuation() {
+		WordsService wordsService = new WordsService();
+		String contents = "***** \"These daughters' words.\"";
+		MultipartFile mockFile = new MockMultipartFile(".txt",
+            "file.txt",
+            "text/plain",
+            contents.getBytes(StandardCharsets.UTF_8));
+		
+		String result = wordsService.processFile(mockFile);
+		String expected = "Word count = 4\n"
+			+ "Average word length = 6.25\n"
+			+ "Number of words of length 5 is 3\n"
+			+ "Number of words of length 10 is 1\n"
+			+ "The most frequently occurring word length is 3, for word lengths of 5\n";
+		Assertions.assertEquals(result, expected);
+	}
+
+	@Test
+	void TestProcessFileSucceedsWhenReadingValidTextFileWithFormattedNumbers() {
+		WordsService wordsService = new WordsService();
+		String contents = "41.6% -1.3 $2.30 01-01-1990";
+		MultipartFile mockFile = new MockMultipartFile(".txt",
+            "file.txt",
+            "text/plain",
+            contents.getBytes(StandardCharsets.UTF_8));
+		
+		String result = wordsService.processFile(mockFile);
+		String expected = "Word count = 4\n"
+			+ "Average word length = 6.0\n"
+			+ "Number of words of length 4 is 1\n"
+			+ "Number of words of length 5 is 2\n"
+			+ "Number of words of length 10 is 1\n"
+			+ "The most frequently occurring word length is 2, for word lengths of 5\n";
+		Assertions.assertEquals(result, expected);
+	}
 }
