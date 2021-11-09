@@ -68,14 +68,15 @@ public class WordsService {
         }
 
         for (int i = 0; i < words.size(); i++) {
-            // when word is alphanumeric and ends on non-alphanumeric character, we treat the last character as punctuation that is not
-            // part of the word
             String word = words.get(i);
             String firstLetter = word.substring(0, 1);
+            // when word is alphanumeric and starts with a double quote then remove it
             if ((word.matches("^.*[a-zA-Z0-9]+.*$")) && firstLetter.matches("\"")) {
                 String wordWithoutPunctuation = word.substring(1, word.length());
                 words.set(i, wordWithoutPunctuation);
             }
+            // when word is alphanumeric and ends on non-alphanumeric character, we treat the last character as punctuation that is not
+            // part of the word
             while ((word.matches("^.*[a-zA-Z0-9]+.*$")) && word.substring(word.length() - 1).matches("[.,;!?\"-]")) {
                 String wordWithoutPunctuation = word.substring(0, words.get(i).length() - 1);
                 words.set(i, wordWithoutPunctuation);
