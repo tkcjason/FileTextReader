@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,10 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class WordsService {
     private final static String TEXT_CONTENT_TYPE = "text/plain";
+
+    private static final Pattern alphanumeric = Pattern.compile("^.*[a-zA-Z0-9]+.*$");
+    private static final Pattern doubleQuote = Pattern.compile("\"");
+    private static final Pattern punctuation = Pattern.compile("[.,;!?\"-]");
     
     /**
      * Process the file.
@@ -71,13 +76,13 @@ public class WordsService {
             String word = words.get(i);
             String firstLetter = word.substring(0, 1);
             // when word is alphanumeric and starts with a double quote then remove it
-            if ((word.matches("^.*[a-zA-Z0-9]+.*$")) && firstLetter.matches("\"")) {
+            if (alphanumeric.matcher(word).matches() && doubleQuote.matcher(firstLetter).matches()) {
                 String wordWithoutPunctuation = word.substring(1, word.length());
                 words.set(i, wordWithoutPunctuation);
             }
             // when word is alphanumeric and ends on non-alphanumeric character, we treat the last character as punctuation that is not
             // part of the word
-            while ((word.matches("^.*[a-zA-Z0-9]+.*$")) && word.substring(word.length() - 1).matches("[.,;!?\"-]")) {
+            while (alphanumeric.matcher(word).matches() && punctuation.matcher(word.substring(word.length() - 1)).matches()) {
                 String wordWithoutPunctuation = word.substring(0, words.get(i).length() - 1);
                 words.set(i, wordWithoutPunctuation);
                 word = words.get(i);
