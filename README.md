@@ -1,5 +1,7 @@
 # FileTextReader
-This file text reader is an application built by Jason Tse with Spring Boot for SYNALOGiK.
+This file text reader is an application built by Jason Tse with Spring Boot.
+
+It provides a REST API for uploading a file containing a section of text/story, and returns statistics around the length of words, average word length, and their frequencies.
 
 ## Installation
 Simply clone the repository from Github.
